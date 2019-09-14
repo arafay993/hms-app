@@ -14,6 +14,10 @@ class Menu extends React.Component {
 				<NavLink className="item" activeonlywhenexact="active" exact to="/bands">
 					Nested CRUD (Bands and Albums)
 				</NavLink>
+
+				<NavLink className="item" activeonlywhenexact="active" exact to="/recipies">
+					Hotel Management System
+				</NavLink>
 			</div>
 		);
 	}

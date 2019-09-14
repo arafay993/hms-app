@@ -7,6 +7,9 @@ import BandForm from '../components/Band/BandForm';
 import AlbumList from '../components/Band/Album/AlbumList';
 import AlbumForm from '../components/Band/Album/AlbumForm';
 
+import RecipeList from '../components/Recipe/RecipeList'
+import RecipeForm from '../components/Recipe/RecipeForm'
+
 class Routes extends React.Component {
 	render() {
 		return (
@@ -18,6 +21,9 @@ class Routes extends React.Component {
 				<Route exact path="/band/:id/albums/" component={AlbumList} />
 				<Route exact path="/band/:id/album/new" component={AlbumForm} />
 				<Route exact path="/band/:id/album/:album_id" component={AlbumForm} />
+				<Route exact path="/recipies" component={RecipeList} />
+				<Route exact path="/recipe/new" component={RecipeForm} />
+				<Route exact path="/recipe/:id" component={RecipeForm} />
 			</Switch>
 		)
 	}

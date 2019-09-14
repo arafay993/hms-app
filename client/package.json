@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@kenshooui/react-multi-select": "^1.1.5",
     "axios": "^0.18.1",
     "classnames": "^2.2.5",
     "history": "^4.7.2",
