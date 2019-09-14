@@ -10,3 +10,14 @@ export function sortArrayByField (a, b, field) {
 	if (a[field] < b[field]) return -1;
 	return 0; // a == b
 }
+
+export function getPriceByIngredients(ingredients = [], price = 0){
+
+	for (let ingredient of ingredients){
+		if (ingredient.group=='intermediate'){
+			ingredient.price = getPriceByIngredients(ingredient.madeof)
+		}
+		price += ingredient.price
+	}
+	return price
+}
