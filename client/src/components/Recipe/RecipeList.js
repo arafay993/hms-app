@@ -10,7 +10,8 @@ export default class RecipeList extends React.Component {
         super(props);
         this.state = {
             recipies : []
-        }
+		}
+		this.deleteRecipe = this.deleteRecipe.bind(this);
     }
 	/**
 	 * Fetch all recipies on component load
@@ -33,7 +34,19 @@ export default class RecipeList extends React.Component {
 		this.setState({
 			recipies : recipies
 		})
-    }
+	}
+	
+	deleteRecipe(id){
+
+		axios.get('/api/recipe/delete/'+id)
+		.then(response => {
+			this.setState({
+			recipies: this.state.recipies.filter(item => item.id !== Number(id))
+			})
+		})
+		.catch(err => console.log(err))
+
+	}
 
     render() {
 		let gridLines = "";
@@ -61,9 +74,9 @@ export default class RecipeList extends React.Component {
 								<NavLink className="ui button compact icon small blue" to={`/recipe/${recipe.id}`} title="Edit">
 									<i className="icon edit"></i>
 								</NavLink>
-								<NavLink className="ui button compact icon small red disabled" to={`/recipe/delete/${recipe.id}`} title="Delete">
+								<button className="ui button compact icon small red" onClick={() => this.deleteRecipe(recipe.id)} title="Delete">
 									<i className="icon trash"></i>
-								</NavLink>
+								</button>
 							</td>
 						</tr>
 					);
