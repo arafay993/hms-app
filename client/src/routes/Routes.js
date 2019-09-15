@@ -9,6 +9,7 @@ import AlbumForm from '../components/Band/Album/AlbumForm';
 
 import RecipeList from '../components/Recipe/RecipeList'
 import RecipeForm from '../components/Recipe/RecipeForm'
+import IngredientList from '../components/Recipe/Ingredient/IngredientList'
 
 class Routes extends React.Component {
 	render() {
@@ -24,6 +25,8 @@ class Routes extends React.Component {
 				<Route exact path="/recipies" component={RecipeList} />
 				<Route exact path="/recipe/new" component={RecipeForm} />
 				<Route exact path="/recipe/:id" component={RecipeForm} />
+				<Route exact path="/recipe/all/ingredients/" component={IngredientList} />
+				<Route exact path="/recipe/:id/ingredients/" component={IngredientList} />
 			</Switch>
 		)
 	}

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect, NavLink } from 'react-router-dom';
 import "@kenshooui/react-multi-select/dist/style.css";
 import MultiSelect from "@kenshooui/react-multi-select";
-import { getPriceByIngredients } from '../../utils/common';
+import getPriceByIngredients from '../../utils/common';
 
 export default class RecipeForm extends React.Component {
 

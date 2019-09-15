@@ -11,7 +11,7 @@ export function sortArrayByField (a, b, field) {
 	return 0; // a == b
 }
 
-export function getPriceByIngredients(ingredients = [], price = 0){
+export default function getPriceByIngredients(ingredients = [], price = 0){
 
 	for (let ingredient of ingredients){
 		if (ingredient.group=='intermediate'){

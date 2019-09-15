@@ -96,6 +96,7 @@ export default class RecipeList extends React.Component {
 			<div className="ui container">
 				<h1>recipies List</h1>
 				<NavLink exact to="/recipe/new" className="ui button primary">Add New</NavLink>
+				<NavLink exact to="/recipe/all/ingredients/" className="ui button primary">Ingredient List</NavLink>
 				{recipies.length > 0 ? grid : emptyMessage }
 			</div>
 		);
