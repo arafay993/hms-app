@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import models from './models';
 import bands from './routes/bands';
 import albums from './routes/albums';
+import ingredient from './routes/ingredient';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/api/bands/', bands);
 app.use('/api/albums/', albums);
+app.use('/api/ingredient/', ingredient);
 
 // Middleware for errors
 app.use((req, res) => {
