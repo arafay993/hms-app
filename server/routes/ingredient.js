@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
     console.log("requse is ", req.body)
 	let {label, group, price, parent_id} = req.body;
 	models.ingredient
-		.create({ label, group, price, parent_id})
+		.create(req.body, {include:[{model: models.ingredient, as: 'madeof'}]})
 		.then(ingredient => res.json({ success: true, ingredient }))
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
 });
