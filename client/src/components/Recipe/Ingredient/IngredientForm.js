@@ -5,6 +5,7 @@ import { Redirect, NavLink } from 'react-router-dom';
 import "@kenshooui/react-multi-select/dist/style.css";
 import MultiSelect from "@kenshooui/react-multi-select";
 import getPriceByIngredients from '../../../utils/common';
+import { Dropdown } from 'semantic-ui-react'
 
 export default class IngredientForm extends React.Component {
 
@@ -42,6 +43,7 @@ export default class IngredientForm extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleMultiSelectChange = this.handleMultiSelectChange.bind(this);
+        this.handleDropdown = this.handleDropdown.bind(this);
     }
 
     componentDidMount() {
@@ -98,6 +100,10 @@ export default class IngredientForm extends React.Component {
         console.log(getPriceByIngredients(selectedItems));
     }
     
+    handleDropdown(e, data){
+        this.setState({ group : data.value });
+    }
+
     handleSubmit(e) {
 		e.preventDefault();
 		let errors = {};
@@ -132,6 +138,10 @@ export default class IngredientForm extends React.Component {
     
     render() {
         const is_intermediate = this.state.group == 'intermediate'
+        const options = [
+            { key: 1, text: 'inventory', value: 'inventory' },
+            { key: 2, text: 'intermediate', value: 'intermediate' }
+          ]
 
 		return (
 			<div>
@@ -163,13 +173,7 @@ export default class IngredientForm extends React.Component {
 
 								<div className={classnames("field", { error: !!this.state.errors.group })}>
 									<label htmlFor="recipe">Group</label>
-									<input
-										type="text" id="group" name="group"
-										value={this.state.group}
-										className="ui input"
-										placeholder="The name of the Group"
-										onChange={this.handleChange}
-									/>
+                                    <Dropdown name="group" clearable options={options} selection onChange={this.handleDropdown} />
 									<span>{this.state.errors.group}</span>
 								</div>
 
