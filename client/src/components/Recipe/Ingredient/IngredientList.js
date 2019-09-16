@@ -13,6 +13,7 @@ export default class IngredientList extends React.Component {
             all_ingredients : []
         }
         this.filterIngredient = this.filterIngredient.bind(this);
+        //this.deleteIngredient = this.deleteIngredient.bind(this);
     }
 	/**
 	 * Fetch all recipies on component load
@@ -60,6 +61,17 @@ export default class IngredientList extends React.Component {
            ingredients : filter_ingredient.madeof
         })
     }
+    // deleteIngredient(id){
+    //     console.log('delete')
+	// 	axios.get('/ingredient/delete/'+id)
+	// 	.then(response => {
+	// 		this.setState({
+	// 		ingredients: this.state.ingredients.filter(item => item.id !== Number(id))
+	// 		})
+	// 	})
+	// 	.catch(err => console.log(err))
+
+	// }
 
 	render() {
         const is_view_recipe = this.props.match.params.id
@@ -69,7 +81,8 @@ export default class IngredientList extends React.Component {
 				<div className="ui three cards">
 					{
 						!!this.state.ingredients && this.state.ingredients.map((ingredient) => {
-							return (<IngredientCard key={ingredient.id} ingredient={ingredient} filterIngredient={this.filterIngredient} />);
+                            return (<IngredientCard key={ingredient.id} ingredient={ingredient} 
+                                filterIngredient={this.filterIngredient}/>);
 						})
 					}
 				</div>
