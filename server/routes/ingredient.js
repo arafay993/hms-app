@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 		order: [['label', 'ASC']]
 	}).then(ingredients => {
 		if (ingredients && Object.keys(ingredients).length > 0)
+
 			res.json({ success: true, ingredients });
 		else
 			res.status(400).json({ success: false, error: "No Ingredient found." });
@@ -20,10 +21,21 @@ router.get('/', (req, res) => {
  */
 router.post('/', (req, res) => {
     console.log("requse is ", req.body)
-	let {label, group, price, parent_id} = req.body;
+	//let {label, group, price, made_of} = req.body;
 	models.ingredient
-		.create(req.body, {include:[{model: models.ingredient, as: 'madeof'}]})
-		.then(ingredient => res.json({ success: true, ingredient }))
+		.create(req.body, {
+			include:[{
+				model: models.ingredient, 
+				as: 'madeof',
+				attributes: ['label', 'group', 'price', 'madeof']
+			}]
+		})
+		.then(ingredient => 
+			{
+				res.json({ success: true, ingredient })
+				console.log(ingredient)
+			}
+		)
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
 });
 
