@@ -43,7 +43,7 @@ export default class IngredientForm extends React.Component {
         let fetch_ingredient_url = '/api/ingredient/'
         axios.get(fetch_ingredient_url)
         .then(response => {
-          this.setState({ all_ingredients: response.data });
+          this.setState({ all_ingredients: response.data.ingredients });
         })
         .catch(function (error) {
           console.log(error);
@@ -111,6 +111,7 @@ export default class IngredientForm extends React.Component {
     
     handleDropdown(e, data){
         this.setState({ group : data.value });
+
     }
 
     handleSubmit(e) {
