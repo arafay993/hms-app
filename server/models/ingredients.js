@@ -33,13 +33,12 @@ export default (sequelize, Sequelize) => {
             },
             as: 'madeof'
         });
-    }
-    Ingredient.associate = (models) => {
         Ingredient.belongsToMany(models.Recipe, {
-          through: 'RecipeIngredient',
-          as: 'recipies',
-          foreignKey: 'ingredientId'
-        });
-      };
+            through: 'RecipeIngredient',
+            as: 'recipies',
+            foreignKey: 'ingredientId'
+          });
+    }
+
     return Ingredient;
 }

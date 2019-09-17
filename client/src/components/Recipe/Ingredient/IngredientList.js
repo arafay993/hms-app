@@ -10,7 +10,7 @@ export default class IngredientList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            all_ingredients : []
+            ingredients : []
         }
         this.filterIngredient = this.filterIngredient.bind(this);
         //this.deleteIngredient = this.deleteIngredient.bind(this);
@@ -19,38 +19,38 @@ export default class IngredientList extends React.Component {
 	 * Fetch all recipies on component load
 	 */
 	componentDidMount() {
-        let fetch_ingredient_url = '/api/ingredients'
+        let fetch_ingredient_url = '/api/ingredient/'
         if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
             fetch_ingredient_url = `/api/recipies/${this.props.match.params.id}/ingredients`
             //fetch_ingredient_url = `/api/recipe/${this.props.match.params.id}`
         }
         axios.get(fetch_ingredient_url)
         .then(response => {
-          this.setState({ all_ingredients: response.data });
+          this.setState({ ingredients: response.data.ingredients });
         })
         .catch(function (error) {
           console.log(error);
 		})
 		//set the dummy data
-        const ingredients = [
-            {id: 1, label: 'spices', group: 'inventory', price: 20},
-            {id: 2, label: 'herbs', group: 'inventory', price: 30},
-            {id: 5, label: 'dairy', group: 'intermediate', 
-                madeof: [
-                    {id: 3, label: 'milk', group: 'inventory', price: 12},
-                    {id: 4, label: 'yougurt', group: 'intermediate',
-                    madeof: [
-                        {id: 3, label: 'milk', group: 'inventory', price: 12},
-                        {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-                    ]},
-                ]
-            },
-            {id: 6, label: 'sugar', group: 'inventory', price: 40},
-        ];
+        // const ingredients = [
+        //     {id: 1, label: 'spices', group: 'inventory', price: 20},
+        //     {id: 2, label: 'herbs', group: 'inventory', price: 30},
+        //     {id: 5, label: 'dairy', group: 'intermediate', 
+        //         madeof: [
+        //             {id: 3, label: 'milk', group: 'inventory', price: 12},
+        //             {id: 4, label: 'yougurt', group: 'intermediate',
+        //             madeof: [
+        //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
+        //                 {id: 7, label: 'bacteria', group: 'inventory', price: 6},
+        //             ]},
+        //         ]
+        //     },
+        //     {id: 6, label: 'sugar', group: 'inventory', price: 40},
+        // ];
 
-		this.setState({
-			ingredients : ingredients
-		})
+		// this.setState({
+		// 	ingredients : ingredients
+		// })
     }
 
     filterIngredient(id){

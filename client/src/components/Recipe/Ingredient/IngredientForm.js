@@ -12,33 +12,42 @@ export default class IngredientForm extends React.Component {
 	constructor(props) {
         super(props);
         
-        const all_ingredients = [
-            {id: 1, label: 'spices', group: 'inventory', price: 20},
-            {id: 2, label: 'herbs', group: 'inventory', price: 30},
-            {id: 5, label: 'dairy', group: 'intermediate', 
-                madeof: [
-                    {id: 3, label: 'milk', group: 'inventory', price: 12},
-                    {id: 4, label: 'yougurt', group: 'intermediate',
-                    madeof: [
-                        {id: 3, label: 'milk', group: 'inventory', price: 12},
-                        {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-                    ]},
-                ]
-            },
-            {id: 6, label: 'sugar', group: 'inventory', price: 40},
-        ];
+        // const all_ingredients = [
+        //     {id: 1, label: 'spices', group: 'inventory', price: 20},
+        //     {id: 2, label: 'herbs', group: 'inventory', price: 30},
+        //     {id: 5, label: 'dairy', group: 'intermediate', 
+        //         madeof: [
+        //             {id: 3, label: 'milk', group: 'inventory', price: 12},
+        //             {id: 4, label: 'yougurt', group: 'intermediate',
+        //             madeof: [
+        //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
+        //                 {id: 7, label: 'bacteria', group: 'inventory', price: 6},
+        //             ]},
+        //         ]
+        //     },
+        //     {id: 6, label: 'sugar', group: 'inventory', price: 40},
+        // ];
 
 		this.state = {
 			id: null,
 			label: '',
 			group: '',
-            ingredients: [],
+            madeof: [],
             price: 0,
-            all_ingredients: all_ingredients,
+            all_ingredients: [],
 			errors: {},
 			loading: false,
 			redirect: false
         }
+
+        let fetch_ingredient_url = '/api/ingredient/'
+        axios.get(fetch_ingredient_url)
+        .then(response => {
+          this.setState({ all_ingredients: response.data });
+        })
+        .catch(function (error) {
+          console.log(error);
+		})
     
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,35 +65,35 @@ export default class IngredientForm extends React.Component {
                     id: response.data.id,
                     label: response.data.label,
                     group: response.data.group,
-                    ingredients: response.data.ingredients,
-                    price: response.data.group=='intermediate' ? getPriceByIngredients(response.data.ingredients) : response.data.price
+                    madeof: response.data.madeof,
+                    price: response.data.group=='intermediate' ? getPriceByIngredients(response.data.madeof) : response.data.price
                 });
             })
             .catch(function (error) {
                 console.log(error);
             })
             //TODO:set the dummy data
-            let ingredients = [
-                    {id: 1, label: 'spices', group: 'inventory', price: 20},
-                    {id: 5, label: 'dairy', group: 'intermediate', 
-                        madeof: [
-                            {id: 3, label: 'milk', group: 'inventory', price: 12},
-                            {id: 4, label: 'yougurt', group: 'intermediate',
-                            madeof: [
-                                {id: 3, label: 'milk', group: 'inventory', price: 12},
-                                {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-                            ]},
-                        ]
-                    },
-                ]
-            this.setState({
-                id: 1,
-                label: 'spices',
-                group: 'inventory',
-                //for multi-select to work, change name -> label and type -> group
-                ingredients: [],
-                price: 20
-            });
+            // let ingredients = [
+            //         {id: 1, label: 'spices', group: 'inventory', price: 20},
+            //         {id: 5, label: 'dairy', group: 'intermediate', 
+            //             madeof: [
+            //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
+            //                 {id: 4, label: 'yougurt', group: 'intermediate',
+            //                 madeof: [
+            //                     {id: 3, label: 'milk', group: 'inventory', price: 12},
+            //                     {id: 7, label: 'bacteria', group: 'inventory', price: 6},
+            //                 ]},
+            //             ]
+            //         },
+            //     ]
+            // this.setState({
+            //     id: 1,
+            //     label: 'spices',
+            //     group: 'inventory',
+            //     //for multi-select to work, change name -> label and type -> group
+            //     ingredients: [],
+            //     price: 20
+            // });
         }
     }
 
@@ -94,7 +103,7 @@ export default class IngredientForm extends React.Component {
     
     handleMultiSelectChange (selectedItems){
         this.setState({
-            ingredients : selectedItems,
+            madeof : selectedItems,
             price: getPriceByIngredients(selectedItems)
         });
         console.log(getPriceByIngredients(selectedItems));
@@ -110,21 +119,21 @@ export default class IngredientForm extends React.Component {
 		// Validation
 		if (this.state.label === '') errors.label = "This field can't be empty";
         if (this.state.group === '') errors.group = "This field can't be empty";
-        if (this.state.group == 'intermediate' && this.state.ingredients.length == 0 ) 
-            errors.ingredients = "This field can't be empty";
+        if (this.state.group == 'intermediate' && this.state.madeof.length == 0 ) 
+            errors.madeof = "This field can't be empty";
 
 		// Fill the errors object state
 		this.setState({ errors });
 
 		// Proceed if everything is OK
 		if (Object.keys(errors).length === 0) {
-            const { id, label, group, ingredients, price } = this.state;
-            const obj = { id, label, group, ingredients, price}
+            const { id, label, group, madeof, price } = this.state;
+            const obj = { id, label, group, madeof, price}
 			this.setState({ loading: true });
 			//this.props.saveBand({ id, title, year, description });
 
 			if (!id) {
-                axios.post('/ingredient/new/', obj)
+                axios.post('/api/ingredient/', obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
             }
@@ -189,15 +198,15 @@ export default class IngredientForm extends React.Component {
 									<span>{this.state.errors.price}</span>
 								</div>
 
-                                { is_intermediate && (<div className={classnames("field", { error: !!this.state.errors.ingredients })}>
+                                { is_intermediate && (<div className={classnames("field", { error: !!this.state.errors.madeof })}>
 									<label htmlFor="ingredients">Ingredients</label>
                                     <MultiSelect
                                         items={this.state.all_ingredients}
-                                        selectedItems={this.state.ingredients}
+                                        selectedItems={this.state.madeof}
                                         onChange={this.handleMultiSelectChange}
                                         withGrouping={true}
                                     />
-									<span>{this.state.errors.ingredients}</span>
+									<span>{this.state.errors.madeof}</span>
 								</div>)}
 
 								<div className="field">
