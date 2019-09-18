@@ -1,11 +1,11 @@
 import express from "express";
 import models from "../models";
+import Validator from 'validator';
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
 	models.ingredient.findAll({
-        include: [{model: models.ingredient, as: 'madeof'}],
 		order: [['label', 'ASC']]
 	}).then(ingredients => {
 		if (ingredients && Object.keys(ingredients).length > 0)
@@ -16,20 +16,32 @@ router.get('/', (req, res) => {
 	})
 });
 
+router.get('/:id', (req, res) => {
+	let error = null;
+	let id = req.params.id || null;
+
+	if (!id) error = "Invalid request.";
+	else if (Validator.isEmpty(id)) error = "Invalid request.";
+	else if (!Validator.isInt(id)) error = "Value must be integer.";
+	else if (id <= 0) error = "Invalid value.";
+
+	if (error) res.status(400).json({ success: false, error: error, data: {} });
+
+	models.ingredient.findById(req.params.id, {
+	}).then(data => {
+		if (data)
+			res.json({ success: true, ingredient: data });
+		else
+			res.status(400).json({ success: false, error: "Ingredient not found.", ingredient: {} });
+	})
+});
 /**
  * Save new ingredient
  */
 router.post('/', (req, res) => {
-    console.log("requse is ", req.body)
-	//let {label, group, price, made_of} = req.body;
+
 	models.ingredient
-		.create(req.body, {
-			include:[{
-				model: models.ingredient, 
-				as: 'madeof',
-				attributes: ['label', 'group', 'price', 'madeof']
-			}]
-		})
+		.create(req.body, {})
 		.then(ingredient => 
 			{
 				res.json({ success: true, ingredient })
@@ -37,6 +49,16 @@ router.post('/', (req, res) => {
 			}
 		)
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
+});
+
+router.put('/:id', (req, res) => {
+
+	let id = req.params.id || null;
+	console.log(id)
+	models.ingredient
+		.update(req.body, { where: { id } })
+		.then(() => res.json({ success: true }))
+		.catch((err) => res.status(400).json({ success: false, errors: { globals: "Ops, something wrong happened.." } }));
 });
 
 //  * Select album data by ID

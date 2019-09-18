@@ -59,14 +59,14 @@ export default class IngredientForm extends React.Component {
 
 		if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
             //this.props.fetchBand(this.props.match.params.id);
-            axios.get('/ingredient/'+this.props.match.params.id)
+            axios.get('/api/ingredient/'+this.props.match.params.id)
             .then(response => {
                 this.setState({
-                    id: response.data.id,
-                    label: response.data.label,
-                    group: response.data.group,
-                    madeof: response.data.madeof,
-                    price: response.data.group=='intermediate' ? getPriceByIngredients(response.data.madeof) : response.data.price
+                    id: response.data.ingredient.id,
+                    label: response.data.ingredient.label,
+                    group: response.data.ingredient.group,
+                    madeof: response.data.ingredient.madeof,
+                    price: response.data.ingredient.group=='intermediate' ? getPriceByIngredients(response.data.ingredient.madeof) : response.data.ingredient.price
                 });
             })
             .catch(function (error) {
@@ -139,7 +139,7 @@ export default class IngredientForm extends React.Component {
                 .catch(error => console.log(error));
             }
 			else {
-                axios.post('/ingredient/update/'+this.props.match.params.id, obj)
+                axios.put('/api/ingredient/'+this.props.match.params.id, obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
             }
@@ -152,6 +152,7 @@ export default class IngredientForm extends React.Component {
             { key: 1, text: 'inventory', value: 'inventory' },
             { key: 2, text: 'intermediate', value: 'intermediate' }
           ]
+        const selected = this.state.group
 
 		return (
 			<div>
@@ -183,7 +184,9 @@ export default class IngredientForm extends React.Component {
 
 								<div className={classnames("field", { error: !!this.state.errors.group })}>
 									<label htmlFor="recipe">Group</label>
-                                    <Dropdown name="group" clearable options={options} selection onChange={this.handleDropdown} />
+                                    <Dropdown name="group" clearable options={options}
+                                     selection onChange={this.handleDropdown} 
+                                     value={selected} />
 									<span>{this.state.errors.group}</span>
 								</div>
 

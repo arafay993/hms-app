@@ -17,22 +17,18 @@ export default (sequelize, Sequelize) => {
             allowNull: true,
             notEmpty: true,
 			comment: "Price of the Ingredient"
-		}
+        },
+        madeof: {
+            type: Sequelize.JSONB,
+            allowNull: true,
+            notEmpty: false,
+        }
 	}, {
 		tableName: "ingredient",
 		freezeTableName: true
     });
     
     Ingredient.associate = (models) => {
-        Ingredient.hasMany(models.ingredient, {
-            onDelete: 'CASCADE',
-            foreignKey: {
-                name: 'parent_id',
-                allowNull: true,
-                notEmpty: false,
-            },
-            as: 'madeof'
-        });
         Ingredient.belongsToMany(models.Recipe, {
             through: 'RecipeIngredient',
             as: 'recipies',
