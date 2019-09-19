@@ -17,23 +17,23 @@ export default class RecipeList extends React.Component {
 	 * Fetch all recipies on component load
 	 */
 	componentDidMount() {
-        axios.get('/recipe')
+        axios.get('/api/recipies/')
         .then(response => {
-          this.setState({ recipies: response.data });
+          this.setState({ recipies: response.data.recipies });
         })
         .catch(function (error) {
           console.log(error);
 		})
 		//set the dummy data
-        const recipies = [
-            { id: 1, name: 'Tania', recipe: 'floppydiskette',
-            ingredients: [] },
-            { id: 2, name: 'Craig', recipe: 'siliconeidolon',
-            ingredients: [] },
-          ];
-		this.setState({
-			recipies : recipies
-		})
+        // const recipies = [
+        //     { id: 1, name: 'Tania', recipe: 'floppydiskette',
+        //     ingredients: [] },
+        //     { id: 2, name: 'Craig', recipe: 'siliconeidolon',
+        //     ingredients: [] },
+        //   ];
+		// this.setState({
+		// 	recipies : recipies
+		// })
 	}
 	
 	deleteRecipe(id){

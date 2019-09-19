@@ -7,6 +7,7 @@ import models from './models';
 import bands from './routes/bands';
 import albums from './routes/albums';
 import ingredient from './routes/ingredient';
+import recipies from './routes/recipies';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/bands/', bands);
 app.use('/api/albums/', albums);
 app.use('/api/ingredient/', ingredient);
+app.use('/api/recipies/', recipies);
 
 // Middleware for errors
 app.use((req, res) => {

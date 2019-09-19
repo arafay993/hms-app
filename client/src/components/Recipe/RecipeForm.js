@@ -10,22 +10,6 @@ export default class RecipeForm extends React.Component {
 
 	constructor(props) {
         super(props);
-        
-        const all_ingredients = [
-            {id: 1, label: 'spices', group: 'inventory', price: 20},
-            {id: 2, label: 'herbs', group: 'inventory', price: 30},
-            {id: 5, label: 'dairy', group: 'intermediate', 
-                madeof: [
-                    {id: 3, label: 'milk', group: 'inventory', price: 12},
-                    {id: 4, label: 'yougurt', group: 'intermediate',
-                    madeof: [
-                        {id: 3, label: 'milk', group: 'inventory', price: 12},
-                        {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-                    ]},
-                ]
-            },
-            {id: 6, label: 'sugar', group: 'inventory', price: 40},
-        ];
 
 		this.state = {
 			id: null,
@@ -34,11 +18,21 @@ export default class RecipeForm extends React.Component {
             ingredients: [],
             selling_price: 0,
             price: 0,
-            all_ingredients: all_ingredients,
+            all_ingredients: [],
 			errors: {},
 			loading: false,
 			redirect: false
         }
+        
+        let fetch_ingredient_url = '/api/ingredient/'
+        axios.get(fetch_ingredient_url)
+        .then(response => {
+          this.setState({ all_ingredients: response.data.ingredients });
+        })
+        .catch(function (error) {
+          console.log(error);
+		})
+
     
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -49,7 +43,7 @@ export default class RecipeForm extends React.Component {
 
 		if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
             //this.props.fetchBand(this.props.match.params.id);
-            axios.get('/recipe/'+this.props.match.params.id)
+            axios.get('/api/recipe/'+this.props.match.params.id)
             .then(response => {
                 this.setState({
                     id: response.data.id,
