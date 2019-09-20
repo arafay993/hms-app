@@ -68,14 +68,13 @@ router.put('/:id', (req, res) => {
 		.update(req.body, { where: { id }})
 		.then((recipe) => {
 			//recipe.reload();
-            var ingredients = req.body.ingredients;
+			var ingredients = req.body.ingredients;
 			var ingredient_ids = ingredients.map(ingredient => ingredient.id);
 			console.log(ingredients[0].id);
-			models.Recipe.findById(recipe[0]).then(updated_recipe => {
-				//console.log("c1",ingredient);
-				//console.log("recipe",updated_recipe);
-				console.log(JSON.stringify(updated_recipe, null, 4));
-				updated_recipe.setingredient(ingredients)
+			models.Recipe.findById(recipe[0]).then(async updated_recipe => {
+				const ingredientInstance = await models.ingredient.findByPk(ingredient_ids[0])
+				console.log(ingredientInstance)
+				updated_recipe.setIngredients(ingredientInstance, {save: false})
                 .then(addedIngredients => console.log(addedIngredients));
 			});
 
