@@ -15,7 +15,13 @@ export default (sequelize, DataTypes) => {
         validate: {
           notEmpty: true
         }
-      }
+      },
+      selling_price: {
+        type: DataTypes.FLOAT(30),
+        allowNull: false,
+        notEmpty: true,
+        comment: "Price of the Recipe"
+          }
     }, {
 		tableName: "Recipe",
 		freezeTableName: true

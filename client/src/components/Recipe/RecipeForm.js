@@ -42,43 +42,44 @@ export default class RecipeForm extends React.Component {
     componentDidMount() {
 
 		if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
-            //this.props.fetchBand(this.props.match.params.id);
-            axios.get('/api/recipe/'+this.props.match.params.id)
+
+            axios.get('/api/recipies/'+this.props.match.params.id)
             .then(response => {
+				console.log(response);
                 this.setState({
-                    id: response.data.id,
-                    name: response.data.name,
-                    recipe: response.data.recipe,
-                    ingredients: response.data.ingredients,
-                    selling_price: response.data.selling_price
+                    id: response.data.recipies.id,
+                    name: response.data.recipies.name,
+                    recipe: response.data.recipies.recipe,
+                    ingredients: response.data.recipies.ingredients,
+                    selling_price: response.data.recipies.selling_price
                 });
             })
             .catch(function (error) {
                 console.log(error);
             })
             //TODO:set the dummy data
-            let ingredients = [
-                    {id: 1, label: 'spices', group: 'inventory', price: 20},
-                    {id: 5, label: 'dairy', group: 'intermediate', 
-                        madeof: [
-                            {id: 3, label: 'milk', group: 'inventory', price: 12},
-                            {id: 4, label: 'yougurt', group: 'intermediate',
-                            madeof: [
-                                {id: 3, label: 'milk', group: 'inventory', price: 12},
-                                {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-                            ]},
-                        ]
-                    },
-                ]
-            this.setState({
-                id: 1,
-                name: 'Tania',
-                recipe: 'floppydiskette',
-                //for multi-select to work, change name -> label and type -> group
-                ingredients: ingredients,
-                selling_price: 60,
-                price: getPriceByIngredients(ingredients)
-            });
+            // let ingredients = [
+            //         {id: 1, label: 'spices', group: 'inventory', price: 20},
+            //         {id: 5, label: 'dairy', group: 'intermediate', 
+            //             madeof: [
+            //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
+            //                 {id: 4, label: 'yougurt', group: 'intermediate',
+            //                 madeof: [
+            //                     {id: 3, label: 'milk', group: 'inventory', price: 12},
+            //                     {id: 7, label: 'bacteria', group: 'inventory', price: 6},
+            //                 ]},
+            //             ]
+            //         },
+            //     ]
+            // this.setState({
+            //     id: 1,
+            //     name: 'Tania',
+            //     recipe: 'floppydiskette',
+            //     //for multi-select to work, change name -> label and type -> group
+            //     ingredients: ingredients,
+            //     selling_price: 60,
+            //     price: getPriceByIngredients(ingredients)
+            // });
         }
     }
 
@@ -108,18 +109,18 @@ export default class RecipeForm extends React.Component {
 
 		// Proceed if everything is OK
 		if (Object.keys(errors).length === 0) {
-            const { id, name, recipe, ingredients } = this.state;
-            const obj = { id, name, recipe, ingredients }
+            const { id, name, recipe, selling_price, ingredients } = this.state;
+            const obj = { id, name, recipe,selling_price, ingredients }
 			this.setState({ loading: true });
 			//this.props.saveBand({ id, title, year, description });
-
+            console.log("obj",obj);
 			if (!id) {
-                axios.post('/recipe/new/', obj)
+                axios.post('/api/recipies/', obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
             }
 			else {
-                axios.post('/recipe/update/'+this.props.match.params.id, obj)
+                axios.put('/api/recipies/'+this.props.match.params.id, obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
             }
