@@ -1,6 +1,8 @@
 import express from "express";
 import models from "../models";
 
+const util = require('util')
+
 const router = express.Router();
 
 /**
@@ -65,10 +67,18 @@ router.put('/:id', (req, res) => {
 	models.Recipe
 		.update(req.body, { where: { id }})
 		.then((recipe) => {
+			//recipe.reload();
             var ingredients = req.body.ingredients;
-            var ingredient_ids = ingredients.map(ingredient => ingredient.id);
-            recipe.setIngredients(ingredient_ids)
+			var ingredient_ids = ingredients.map(ingredient => ingredient.id);
+			console.log(ingredients[0].id);
+			models.Recipe.findById(recipe[0]).then(updated_recipe => {
+				//console.log("c1",ingredient);
+				//console.log("recipe",updated_recipe);
+				console.log(JSON.stringify(updated_recipe, null, 4));
+				updated_recipe.setingredient(ingredients)
                 .then(addedIngredients => console.log(addedIngredients));
+			});
+
             res.json({ success: true })
         })
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
