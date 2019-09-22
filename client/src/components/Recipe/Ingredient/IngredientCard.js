@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 export default class IngredientCard extends React.Component {
 	render() {
         const ingredient = this.props.ingredient;
-        const is_intermediate = ingredient.group === 'intermediate'
+        const is_intermediate = ingredient.group === 'intermediate';
 
 		return (
 			<div className="ui card">

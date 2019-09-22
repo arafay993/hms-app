@@ -24,22 +24,13 @@ export default class RecipeList extends React.Component {
         .catch(function (error) {
           console.log(error);
 		})
-		//set the dummy data
-        // const recipies = [
-        //     { id: 1, name: 'Tania', recipe: 'floppydiskette',
-        //     ingredients: [] },
-        //     { id: 2, name: 'Craig', recipe: 'siliconeidolon',
-        //     ingredients: [] },
-        //   ];
-		// this.setState({
-		// 	recipies : recipies
-		// })
 	}
 	
 	deleteRecipe(id){
 
-		axios.get('/api/recipe/delete/'+id)
+		axios.get('/api/recipe/'+id)
 		.then(response => {
+			//Remove the record from recipe list after deleting it from the back-end
 			this.setState({
 			recipies: this.state.recipies.filter(item => item.id !== Number(id))
 			})

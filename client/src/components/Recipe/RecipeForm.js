@@ -24,6 +24,7 @@ export default class RecipeForm extends React.Component {
 			redirect: false
         }
         
+		//Fetch all ingredients in a multi-select field
         let fetch_ingredient_url = '/api/ingredient/'
         axios.get(fetch_ingredient_url)
         .then(response => {
@@ -32,7 +33,6 @@ export default class RecipeForm extends React.Component {
         .catch(function (error) {
           console.log(error);
 		})
-
     
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,6 +43,7 @@ export default class RecipeForm extends React.Component {
 
 		if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
 
+			//Fetch Recipe by Id
             axios.get('/api/recipies/'+this.props.match.params.id)
             .then(response => {
 				console.log(response);
@@ -51,35 +52,13 @@ export default class RecipeForm extends React.Component {
                     name: response.data.recipies.name,
                     recipe: response.data.recipies.recipe,
                     ingredients: response.data.recipies.ingredients,
-                    selling_price: response.data.recipies.selling_price
+                    selling_price: response.data.recipies.selling_price,
+                    price: response.data.recipies.selling_price
                 });
             })
             .catch(function (error) {
                 console.log(error);
             })
-            //TODO:set the dummy data
-            // let ingredients = [
-            //         {id: 1, label: 'spices', group: 'inventory', price: 20},
-            //         {id: 5, label: 'dairy', group: 'intermediate', 
-            //             madeof: [
-            //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
-            //                 {id: 4, label: 'yougurt', group: 'intermediate',
-            //                 madeof: [
-            //                     {id: 3, label: 'milk', group: 'inventory', price: 12},
-            //                     {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-            //                 ]},
-            //             ]
-            //         },
-            //     ]
-            // this.setState({
-            //     id: 1,
-            //     name: 'Tania',
-            //     recipe: 'floppydiskette',
-            //     //for multi-select to work, change name -> label and type -> group
-            //     ingredients: ingredients,
-            //     selling_price: 60,
-            //     price: getPriceByIngredients(ingredients)
-            // });
         }
     }
 
@@ -92,13 +71,12 @@ export default class RecipeForm extends React.Component {
             ingredients : selectedItems,
             price: getPriceByIngredients(selectedItems)
         });
-        console.log(getPriceByIngredients(selectedItems));
     }
     
     handleSubmit(e) {
 		e.preventDefault();
 		let errors = {};
-		// Validation
+		// Validation on the Recipe's field
 		if (this.state.name === '') errors.name = "This field can't be empty";
         if (this.state.recipe === '') errors.recipe = "This field can't be empty";
         if (this.state.ingredients.length == 0 ) errors.ingredients = "This field can't be empty";
@@ -112,8 +90,7 @@ export default class RecipeForm extends React.Component {
             const { id, name, recipe, selling_price, ingredients } = this.state;
             const obj = { id, name, recipe,selling_price, ingredients }
 			this.setState({ loading: true });
-			//this.props.saveBand({ id, title, year, description });
-            console.log("obj",obj);
+
 			if (!id) {
                 axios.post('/api/recipies/', obj)
                 .then(() => this.setState({ redirect: true }))

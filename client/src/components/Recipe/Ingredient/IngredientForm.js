@@ -11,27 +11,11 @@ export default class IngredientForm extends React.Component {
 
 	constructor(props) {
         super(props);
-        
-        // const all_ingredients = [
-        //     {id: 1, label: 'spices', group: 'inventory', price: 20},
-        //     {id: 2, label: 'herbs', group: 'inventory', price: 30},
-        //     {id: 5, label: 'dairy', group: 'intermediate', 
-        //         madeof: [
-        //             {id: 3, label: 'milk', group: 'inventory', price: 12},
-        //             {id: 4, label: 'yougurt', group: 'intermediate',
-        //             madeof: [
-        //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
-        //                 {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-        //             ]},
-        //         ]
-        //     },
-        //     {id: 6, label: 'sugar', group: 'inventory', price: 40},
-        // ];
 
 		this.state = {
 			id: null,
 			label: '',
-			group: '',
+			group: 'inventory',
             madeof: [],
             price: 0,
             all_ingredients: [],
@@ -40,6 +24,7 @@ export default class IngredientForm extends React.Component {
 			redirect: false
         }
 
+        //Fetch all ingredients list
         let fetch_ingredient_url = '/api/ingredient/'
         axios.get(fetch_ingredient_url)
         .then(response => {
@@ -58,7 +43,7 @@ export default class IngredientForm extends React.Component {
     componentDidMount() {
 
 		if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
-            //this.props.fetchBand(this.props.match.params.id);
+            //Fetch ingredient by Id for updation
             axios.get('/api/ingredient/'+this.props.match.params.id)
             .then(response => {
                 this.setState({
@@ -72,28 +57,6 @@ export default class IngredientForm extends React.Component {
             .catch(function (error) {
                 console.log(error);
             })
-            //TODO:set the dummy data
-            // let ingredients = [
-            //         {id: 1, label: 'spices', group: 'inventory', price: 20},
-            //         {id: 5, label: 'dairy', group: 'intermediate', 
-            //             madeof: [
-            //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
-            //                 {id: 4, label: 'yougurt', group: 'intermediate',
-            //                 madeof: [
-            //                     {id: 3, label: 'milk', group: 'inventory', price: 12},
-            //                     {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-            //                 ]},
-            //             ]
-            //         },
-            //     ]
-            // this.setState({
-            //     id: 1,
-            //     label: 'spices',
-            //     group: 'inventory',
-            //     //for multi-select to work, change name -> label and type -> group
-            //     ingredients: [],
-            //     price: 20
-            // });
         }
     }
 
@@ -117,7 +80,7 @@ export default class IngredientForm extends React.Component {
     handleSubmit(e) {
 		e.preventDefault();
 		let errors = {};
-		// Validation
+		// Validation on Ingredient's field
 		if (this.state.label === '') errors.label = "This field can't be empty";
         if (this.state.group === '') errors.group = "This field can't be empty";
         if (this.state.group == 'intermediate' && this.state.madeof.length == 0 ) 
@@ -131,14 +94,15 @@ export default class IngredientForm extends React.Component {
             const { id, label, group, madeof, price } = this.state;
             const obj = { id, label, group, madeof, price}
 			this.setState({ loading: true });
-			//this.props.saveBand({ id, title, year, description });
 
 			if (!id) {
+                //Create the Ingredient record
                 axios.post('/api/ingredient/', obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
             }
 			else {
+                //Update the Ingredient record
                 axios.put('/api/ingredient/'+this.props.match.params.id, obj)
                 .then(() => this.setState({ redirect: true }))
                 .catch(error => console.log(error));
@@ -147,11 +111,13 @@ export default class IngredientForm extends React.Component {
     }
     
     render() {
+        //show the multi-select field
         const is_intermediate = this.state.group == 'intermediate'
         const options = [
             { key: 1, text: 'inventory', value: 'inventory' },
             { key: 2, text: 'intermediate', value: 'intermediate' }
           ]
+        //assing selected value to dropdown field
         const selected = this.state.group
 
 		return (

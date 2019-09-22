@@ -13,65 +13,38 @@ export default class IngredientList extends React.Component {
             ingredients : []
         }
         this.filterIngredient = this.filterIngredient.bind(this);
-        //this.deleteIngredient = this.deleteIngredient.bind(this);
     }
 	/**
-	 * Fetch all recipies on component load
+	 * Fetch either all ingredients or ingredients attached to a specific recipe item on component load
 	 */
 	componentDidMount() {
         let fetch_ingredient_url = '/api/ingredient/'
         if (this.props.match && this.props.match.params && typeof this.props.match.params.id !== "undefined") {
-            fetch_ingredient_url = `/api/recipies/${this.props.match.params.id}/ingredients`
-            //fetch_ingredient_url = `/api/recipe/${this.props.match.params.id}`
+            //Fetch ingredients of a recipe
+            fetch_ingredient_url = `/api/recipies/${this.props.match.params.id}`
         }
         axios.get(fetch_ingredient_url)
         .then(response => {
-          this.setState({ ingredients: response.data.ingredients });
+            if (response.data.ingredients)
+                this.setState({ ingredients: response.data.ingredients });
+            else
+                this.setState({ ingredients: response.data.recipies.ingredients });
         })
         .catch(function (error) {
           console.log(error);
 		})
-		//set the dummy data
-        // const ingredients = [
-        //     {id: 1, label: 'spices', group: 'inventory', price: 20},
-        //     {id: 2, label: 'herbs', group: 'inventory', price: 30},
-        //     {id: 5, label: 'dairy', group: 'intermediate', 
-        //         madeof: [
-        //             {id: 3, label: 'milk', group: 'inventory', price: 12},
-        //             {id: 4, label: 'yougurt', group: 'intermediate',
-        //             madeof: [
-        //                 {id: 3, label: 'milk', group: 'inventory', price: 12},
-        //                 {id: 7, label: 'bacteria', group: 'inventory', price: 6},
-        //             ]},
-        //         ]
-        //     },
-        //     {id: 6, label: 'sugar', group: 'inventory', price: 40},
-        // ];
-
-		// this.setState({
-		// 	ingredients : ingredients
-		// })
     }
 
     filterIngredient(id){
 
         let filter_ingredient = this.state.ingredients.filter(item => item.id == Number(id))[0]
-        console.log(filter_ingredient)
-        this.setState({
-           ingredients : filter_ingredient.madeof
-        })
+        //drill down to the details of an Intermediate ingredient only
+        if (filter_ingredient.group === 'intermediate')
+            this.setState({
+            ingredients : filter_ingredient.madeof
+            });
     }
-    // deleteIngredient(id){
-    //     console.log('delete')
-	// 	axios.get('/ingredient/delete/'+id)
-	// 	.then(response => {
-	// 		this.setState({
-	// 		ingredients: this.state.ingredients.filter(item => item.id !== Number(id))
-	// 		})
-	// 	})
-	// 	.catch(err => console.log(err))
 
-	// }
 
 	render() {
         const is_view_recipe = this.props.match.params.id
