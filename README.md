@@ -1,39 +1,65 @@
-# react-with-nodejs-and-sequelize
+# Hotel Management System
 
-### Summary
-The main idea of this project is to create an application with relational database exposing data through API services using NodeJS + Express. The front-end uses React and Redux working directly with state that is filled by the NodeJS API.
 
-> - The **client-side** is a React + Redux app based.
-> - The **server-side** is built in NodeJS (Express) and works like an API server.
-> - This application uses Sequelize ORM to manage relational database and maintain it's data.
+### Technology Stack
 
-I choose to use only [prop-types](https://www.npmjs.com/package/prop-types) to cover all data typing and obligation requirements in React Components, when it's necessary. 
+> - React (For Front-end development).
+> - Node JS (For Back-end Development).
+> - Express (For Rest API Development).
+> - PostgreSQL (For storing data permanently).
+> - Sequelize (A Promise-based ORM for Node JS).
 
-#### Server-Side
-The NodeJS Express application, located in the ```/server/``` folder.
+### Problem Statement
 
-Inside it's scope use ```npm install``` to install all dependencies and ```npm start``` to run the server application after that.
+You are the owner of a high-end restaurant that uses very expensive ingredients in its dishes. Your food costs are running high, and you need to put a stop to that. As a starting point, you need to record all your recipes in a system that would allow you to calculate the cost for menu items, so you can compare it with the price charged and ensure that you are making enough profit to keep you and your business alive.
 
-> - Be sure that the database is working before starting the server.
-> - All the database connections you need (for each environment) are in ```/server/config/database.json```.
 
-#### Client-Side
-In the ```/client/``` folder we have the client-side React application.
+### Synopsis
 
-This client was built using the official Facebook [create-react-app](https://www.npmjs.com/package/create-react-app) npm package. This package basically create a working React application, configured with minimal dependency and granting imediate work with no configuration for features like Babel, Webpack, and another stuff (because it's already done).
+**Menu items** are the items that can be sold from your menu.
+There are two types of ingredients i.e **inventory ingredient** and **intermediate ingredient**.
+An **Inventory ingredient** is one that is bought from the market. Each inventory ingredient has a price.
+An **Intermediate ingredient** is one that is created from a combination of one or more inventory/intermediate ingredients. 
+An **intermediate ingredient recipe** is a DAG of inventory and intermediate ingredients that are used to prepare that intermediate ingredient.
+Each intermediate ingredient has a price computed from the price of all its ingredients.
+A **menu item recipe** is a DAG of inventory and intermediate ingredients, terminating at (or originating from) a menu item.
 
-To install npm dependencies use ```npm install``` and finally ```npm start``` to run the React application.
+#### Version used
 
-The UI is fully made using [Semantic UI](https://semantic-ui.com/) - decided that it's the oportunity to get it out from my pending PoC checklist and use effectively. Semantic is a development framework that helps to create modern designs and responsive layouts. It also empowers designers and developers by creating a shared vocabulary for UI.
+> - Node : v10.16.0
+> - npm : 
+> - React : v16.8.1
 
-#### TDD + BDD
-We have some tests too to be sure that our client and server-side API are working succesfully.
+#### Database Models
 
-I have writen some tests in API side using [Mocha](https://mochajs.org/) and [Chai](http://www.chaijs.com/), disposed in ```/server/test/```.
+> - **Recipe** (a.k.a Menu Item Recipe).
+> - **Ingredient** (a single table for Storing inventory & intermediate ingredients by introducing a field called group).
+> - **RecipeIngredient** (Association table of Recipe & Ingredient).
 
-Mocha is used to build tests and Chai to configure the asserts (TDD) and the behaviours (BDD) to improve test accuracy against the way we can use the API and also the way we should take care about errors. This way we know it's OK for every situation.
+Note: There exist a Many-To-Many relationship between Recipe and Ingredient.
 
-You can run all tests entering the server folder in terminal and just typing: ```npm run test``` - It's configured to run and compile with **Babel (ES6)** in then server "package.json".
+#### Repository Structure
 
-#### Developed by
-Rodrigo Quiñones Pichioli, since Mar/02/2018
+> - ```/client/``` (React app located here).
+> - ```/server/``` (Node JS app located here).
+
+React app and Node JS app communicates with each other using REST API's. The configuration of the proxy server is defined in ```client/package.json``` as ```"proxy": "http://localhost:8080"```. You can adjust it according to your need.
+
+#### Configuration
+
+First thing first, create a new database called **hms**.
+
+> - ```createdb hms``` (This utility is provided by the PostgreSQL itself, you just need to run it in your terminal).
+
+Make sure your PostgreSQL server is up and running. On Linux shell, you can execute ```sudo service postgres status``` to see if it is active or not.
+
+After cloning the Repo, run the following commands inside their scopes (i.e client & server directory):
+
+> - ```npm install```.
+> - ```npm start```.
+
+You will see the client app running on localhost:3000, while your server app running on localhost:8080. Additionally you can set the Environment variable for Development/Production on Linux like this ```export NODE_ENV=development```/```export NODE_ENV=production``` and restart the server.
+
+
+### Developed by
+-Abdul Rafay Khan, since Sep/24/2019
