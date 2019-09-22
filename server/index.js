@@ -4,8 +4,6 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import models from './models';
-import bands from './routes/bands';
-import albums from './routes/albums';
 import ingredient from './routes/ingredient';
 import recipies from './routes/recipies';
 
@@ -26,9 +24,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/bands/', bands);
-app.use('/api/albums/', albums);
+// Routes for CRUD
 app.use('/api/ingredient/', ingredient);
 app.use('/api/recipies/', recipies);
 

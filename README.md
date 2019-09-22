@@ -51,7 +51,7 @@ First thing first, create a new database called **hms**.
 
 > - ```createdb hms``` (This utility is provided by the PostgreSQL itself, you just need to run it in your terminal).
 
-Make sure your PostgreSQL server is up and running. On Linux shell, you can execute ```sudo service postgres status``` to see if it is active or not.
+Make sure your PostgreSQL server is up and running. On Linux shell, you can execute ```sudo service postgres status``` to see if it is active or not. Database configuration is defined in ```/server/config/database.json```.
 
 After cloning the Repo, run the following commands inside their scopes (i.e client & server directory):
 

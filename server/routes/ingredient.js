@@ -4,6 +4,7 @@ import Validator from 'validator';
 
 const router = express.Router();
 
+//Fetch all records of Ingredients
 router.get('/', (req, res) => {
 	models.ingredient.findAll({
 		order: [['label', 'ASC']]
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 	})
 });
 
+//Fetch Ingredient by Id
 router.get('/:id', (req, res) => {
 	let error = null;
 	let id = req.params.id || null;
@@ -36,7 +38,7 @@ router.get('/:id', (req, res) => {
 	})
 });
 /**
- * Save new ingredient
+ * Save new Ingredient
  */
 router.post('/', (req, res) => {
 
@@ -51,46 +53,16 @@ router.post('/', (req, res) => {
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
 });
 
+//Update Ingredient by Id
 router.put('/:id', (req, res) => {
 
 	let id = req.params.id || null;
-	console.log(id)
+
 	models.ingredient
 		.update(req.body, { where: { id } })
 		.then(() => res.json({ success: true }))
 		.catch((err) => res.status(400).json({ success: false, errors: { globals: "Ops, something wrong happened.." } }));
 });
 
-//  * Select album data by ID
-//  */
-// router.get('/:id', (req, res) => {
-// 	const id = req.params.id
-// 	models.album.find({ where: { id } }).then(album => {
-// 		if (album) res.json({ success: true, album });
-// 		else res.status(400).json({ success: false, error: "Album not found." });
-// 	})
-// });
-
-// /**
-//  * Update album by ID
-//  */
-// router.put('/:id', (req, res) => {
-// 	const { id, title, description, cover, year } = req.body;
-// 	models.album
-// 		.update({ title, description, cover, year }, { where: { id }})
-// 		.then(() => res.json({ success: true }))
-// 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
-// });
-
-// /**
-//  * Delete album by ID
-//  */
-// router.delete('/:id', (req, res) => {
-// 	const id = req.params.id;
-// 	models.album
-// 		.destroy({ where: { id } })
-// 		.then(() => res.json({ success: true }))
-// 		.catch(err => res.status(400).json({ success: false, errors: { globals: err } }));
-// });
 
 export default router;

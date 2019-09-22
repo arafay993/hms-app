@@ -1,12 +1,10 @@
 import express from "express";
 import models from "../models";
 
-const util = require('util')
-
 const router = express.Router();
 
 /**
- * Get all bands
+ * Get all recipies
  */
 router.get('/', (req, res) => {
 	models.Recipe.findAll({
@@ -24,9 +22,19 @@ router.get('/', (req, res) => {
 	})
 });
 
+//Get Recipe by Id
 router.get('/:id', (req, res) => {
 
-    const id = req.params.id;
+	let error = null;
+	let id = req.params.id || null;
+
+	if (!id) error = "Invalid request.";
+	else if (Validator.isEmpty(id)) error = "Invalid request.";
+	else if (!Validator.isInt(id)) error = "Value must be integer.";
+	else if (id <= 0) error = "Invalid value.";
+
+	if (error) res.status(400).json({ success: false, error: error, data: {} });
+
 	models.Recipe.findById(id, {
         include: [{
             model: models.ingredient,
@@ -38,10 +46,13 @@ router.get('/:id', (req, res) => {
 		if (recipies && Object.keys(recipies).length > 0)
 			res.json({ success: true, recipies });
 		else
-			res.status(400).json({ success: false, error: "Any Recipe found." });
+			res.status(400).json({ success: false, error: "Recipe not found." });
 	})
 });
 
+/**
+ *  Create new Recipe
+ */
 router.post('/', (req, res) => {
 
 	models.Recipe
@@ -59,15 +70,15 @@ router.post('/', (req, res) => {
 });
 
 /**
- * Update album by ID
+ * Update Recipe by Id
  */
 router.put('/:id', (req, res) => {
-    //const { id, title, description, cover, year } = req.body;
+    
     const id = req.params.id;
 	models.Recipe
 		.update(req.body, { where: { id }})
 		.then((recipe) => {
-			//recipe.reload();
+	
 			var ingredients = req.body.ingredients;
 			var ingredient_ids = ingredients.map(ingredient => ingredient.id);
 			console.log(ingredients[0].id);
@@ -82,5 +93,17 @@ router.put('/:id', (req, res) => {
         })
 		.catch(err => res.status(400).json({ success: false, errors: { globals: err }}));
 });
+
+/**
+ * Delete Recipe by Id
+ */
+router.delete('/:id', (req, res) => {
+	let id = req.params.id;
+	models.Recipe
+		.destroy({ where: { id } })
+		.then((rowDeleted) => res.json({ success: true, deleted: rowDeleted }))
+		.catch((err) => res.status(500).json({ success: false, errors: { globals: err } }));
+});
+
 
 export default router;
