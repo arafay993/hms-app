@@ -43,7 +43,7 @@ Note: There exist a Many-To-Many relationship between Recipe and Ingredient.
 > - ```/client/``` (React app located here).
 > - ```/server/``` (Node JS app located here).
 
-React app and Node JS app communicates with each other using REST API's. The configuration of the proxy server is defined in ```client/package.json``` as ```"proxy": "http://localhost:8080"```. You can adjust it according to your need.
+React app and Node JS app communicates with each other using REST APIs. The configuration of the proxy server is defined in ```client/package.json``` as ```"proxy": "http://localhost:8080"```. You can adjust it according to your need.
 
 #### Configuration
 
@@ -58,7 +58,7 @@ After cloning the Repo, run the following commands inside their scopes (i.e clie
 > - ```npm install```.
 > - ```npm start```.
 
-You will see the client app running on localhost:3000, while your server app running on localhost:8080. Additionally you can set the Environment variable for Development/Production on Linux like this ```export NODE_ENV=development```/```export NODE_ENV=production``` and restart the server.
+You will see the client app running on localhost:3000, while your server app running on localhost:8080. Additionally you can set the Environment variable for Development/Production on Linux like this ```export NODE_ENV=development```/```export NODE_ENV=production``` and then restart the server.
 
 
 ### Developed by
