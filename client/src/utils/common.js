@@ -5,7 +5,7 @@
 export default function getPriceByIngredients(ingredients = [], price = 0){
 
 	for (let ingredient of ingredients){
-		if (ingredient.group=='intermediate'){
+		if (ingredient.group ==='intermediate'){
 			ingredient.price = getPriceByIngredients(ingredient.madeof)
 		}
 		price += ingredient.price

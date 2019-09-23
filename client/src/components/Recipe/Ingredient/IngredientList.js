@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import IngredientCard from './IngredientCard';
 import axios from 'axios';
 import getPriceByIngredients from '../../../utils/common' 
@@ -37,7 +37,7 @@ export default class IngredientList extends React.Component {
 
     filterIngredient(id){
 
-        let filter_ingredient = this.state.ingredients.filter(item => item.id == Number(id))[0]
+        let filter_ingredient = this.state.ingredients.filter(item => item.id === Number(id))[0]
         //drill down to the details of an Intermediate ingredient only
         if (filter_ingredient.group === 'intermediate')
             this.setState({

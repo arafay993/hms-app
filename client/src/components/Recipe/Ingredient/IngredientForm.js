@@ -51,7 +51,7 @@ export default class IngredientForm extends React.Component {
                     label: response.data.ingredient.label,
                     group: response.data.ingredient.group,
                     madeof: response.data.ingredient.madeof,
-                    price: response.data.ingredient.group=='intermediate' ? getPriceByIngredients(response.data.ingredient.madeof) : response.data.ingredient.price
+                    price: response.data.ingredient.group ==='intermediate' ? getPriceByIngredients(response.data.ingredient.madeof) : response.data.ingredient.price
                 });
             })
             .catch(function (error) {
@@ -83,7 +83,7 @@ export default class IngredientForm extends React.Component {
 		// Validation on Ingredient's field
 		if (this.state.label === '') errors.label = "This field can't be empty";
         if (this.state.group === '') errors.group = "This field can't be empty";
-        if (this.state.group == 'intermediate' && this.state.madeof.length == 0 ) 
+        if (this.state.group === 'intermediate' && this.state.madeof.length === 0 ) 
             errors.madeof = "This field can't be empty";
 
 		// Fill the errors object state
@@ -112,7 +112,7 @@ export default class IngredientForm extends React.Component {
     
     render() {
         //show the multi-select field
-        const is_intermediate = this.state.group == 'intermediate'
+        const is_intermediate = this.state.group === 'intermediate'
         const options = [
             { key: 1, text: 'inventory', value: 'inventory' },
             { key: 2, text: 'intermediate', value: 'intermediate' }

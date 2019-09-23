@@ -54,7 +54,7 @@ export default class RecipeList extends React.Component {
 							<td style={{ textAlign: "center" }}>
 								<div className={classnames('ui','label','circular','small', {
 									'green' : recipe.ingredients.length > 0,
-									'yellow' : recipe.ingredients.length == 0
+									'yellow' : recipe.ingredients.length === 0
 								})}>{recipe.ingredients.length}</div>
 							</td>
 							<td style={{ textAlign: "right" }}>
@@ -97,7 +97,7 @@ export default class RecipeList extends React.Component {
 
 		return (
 			<div className="ui container">
-				<h1>recipies List</h1>
+				<h1>Recipies</h1>
 				<NavLink exact to="/recipe/new" className="ui button primary">Add New</NavLink>
 				<NavLink exact to="/recipe/all/ingredients/" className="ui button primary">Ingredient List</NavLink>
 				{recipies.length > 0 ? grid : emptyMessage }

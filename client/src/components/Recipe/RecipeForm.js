@@ -79,7 +79,7 @@ export default class RecipeForm extends React.Component {
 		// Validation on the Recipe's field
 		if (this.state.name === '') errors.name = "This field can't be empty";
         if (this.state.recipe === '') errors.recipe = "This field can't be empty";
-        if (this.state.ingredients.length == 0 ) errors.ingredients = "This field can't be empty";
+        if (this.state.ingredients.length === 0 ) errors.ingredients = "This field can't be empty";
         if (this.state.selling_price <= this.state.price) errors.selling_price = "For maximum profit, selling price must be higher than cost price"
 
 		// Fill the errors object state
