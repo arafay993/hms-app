@@ -27,7 +27,7 @@ A **menu item recipe** is a DAG of inventory and intermediate ingredients, termi
 #### Version used
 
 > - Node : v10.16.0
-> - npm : 
+> - npm : v6.9.0
 > - React : v16.8.1
 
 #### Database Models
