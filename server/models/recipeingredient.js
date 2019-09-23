@@ -1,6 +1,11 @@
 export default (sequelize, DataTypes) => {
     const RecipeIngredient = sequelize.define('RecipeIngredient', {
-       recipeId: {
+      id: { 
+        type: DataTypes.INTEGER, 
+        primaryKey: true,
+        autoIncrement: true
+       }, 
+      recipeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
