@@ -117,7 +117,7 @@ export default class IngredientForm extends React.Component {
             { key: 1, text: 'inventory', value: 'inventory' },
             { key: 2, text: 'intermediate', value: 'intermediate' }
           ]
-        //assing selected value to dropdown field
+        //assign selected value to dropdown field
         const selected = this.state.group
 
 		return (

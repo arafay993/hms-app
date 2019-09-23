@@ -22,7 +22,6 @@ export default class RecipeList extends React.Component {
           this.setState({ recipies: response.data.recipies });
         })
         .catch(function (error) {
-          console.log(error);
 		})
 	}
 	
@@ -31,7 +30,6 @@ export default class RecipeList extends React.Component {
 		axios.delete('/api/recipies/'+id)
 		.then(response => {
 			//Remove the record from recipe list after deleting it from the back-end
-			console.log('response',response)
 			this.setState({
 			recipies: this.state.recipies.filter(item => item.id !== Number(id))
 			})
