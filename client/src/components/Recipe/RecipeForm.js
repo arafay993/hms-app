@@ -52,8 +52,8 @@ export default class RecipeForm extends React.Component {
                     name: response.data.recipies.name,
                     recipe: response.data.recipies.recipe,
                     ingredients: response.data.recipies.ingredients,
-                    selling_price: response.data.recipies.selling_price,
-                    price: response.data.recipies.selling_price
+					selling_price: response.data.recipies.selling_price,
+                    price: getPriceByIngredients(response.data.recipies.ingredients)
                 });
             })
             .catch(function (error) {

@@ -1,5 +1,6 @@
 import express from "express";
 import models from "../models";
+import Validator from 'validator';
 
 const router = express.Router();
 
@@ -80,12 +81,15 @@ router.put('/:id', (req, res) => {
 		.then((recipe) => {
 	
 			var ingredients = req.body.ingredients;
+			//map array of ingredients to array of ingredient ids
 			var ingredient_ids = ingredients.map(ingredient => ingredient.id);
-			console.log(ingredients[0].id);
-			models.Recipe.findById(recipe[0]).then(async updated_recipe => {
-				const ingredientInstance = await models.ingredient.findByPk(ingredient_ids[0])
-				console.log(ingredientInstance)
-				updated_recipe.setIngredients(ingredientInstance, {save: false})
+
+			//Get the model instance of Recipe
+			models.Recipe.findById(id).then(async updatedRecipe => {
+
+				const ingredientInstances = await models.ingredient.findAll({ where: { id: ingredient_ids } })
+
+				updatedRecipe.setIngredients(ingredientInstances, {save: false})
                 .then(addedIngredients => console.log(addedIngredients));
 			});
 
